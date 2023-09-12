@@ -61,7 +61,12 @@ namespace NhlClassLibrary
 
         // override to ToString() with a string representation of the current object
         // to include the NhlPlayer properties and NhlGoalie properties
-
+        public override string ToString()
+        {
+            // base is this scenario is the NhlPlayer
+            //return $"{Name},{Position},{JerseyNumber},{Goals},{Assists},{Points},{SaveValuePercentage},{GoalsAgainstAverage},{Shutouts}"
+            return $"{base.ToString()},{SaveValuePercentage},{GoalsAgainstAverage},{Shutouts}";
+        }
 
 
     }
