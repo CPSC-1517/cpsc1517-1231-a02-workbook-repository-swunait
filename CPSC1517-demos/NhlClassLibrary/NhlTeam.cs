@@ -73,6 +73,36 @@ namespace NhlClassLibrary
         //      - cannot have more than 23 players
         public void AddPlayer(NhlPlayer newPlayer)
         {
+            // Throw an ArgumentNullException if newPlayer is null
+            if (newPlayer == null)
+            //if (newPlayer is null)
+            {
+                throw new ArgumentNullException(nameof(newPlayer), 
+                    "The newPlayer parameter cannot be null.");
+            }
+
+            // Throw an ArgumentException if there is another player with the same jerseyNumber
+            // Technique #1: Search for existing player by jerseyNumber with sequential search
+            //foreach (NhlPlayer player in Players)
+            //{
+            //    if (player.JerseyNumber == newPlayer.JerseyNumber)
+            //    {
+            //        throw new ArgumentException(
+            //            $"There is already another player with jerseyNumber {newPlayer.JerseyNumber}",
+            //            nameof(newPlayer));
+            //    }
+            //}
+            // Technique #2: Use the Exists() method of the List<T> class.
+            bool foundPlayer = Players.Exists(
+                currentPlayer => currentPlayer.JerseyNumber == newPlayer.JerseyNumber);
+            if (foundPlayer)
+            {
+                throw new ArgumentException(
+                        $"There is already another player with jerseyNumber {newPlayer.JerseyNumber}",
+                        nameof(newPlayer));
+            }
+            
+
             if (Players.Count >= 23) // double-check logic
             {
                 throw new InvalidOperationException("Team is full. Cannot add anymore players.");
