@@ -67,6 +67,60 @@ namespace NhlClassLibrary
         public List<NhlPlayer> Players { get; private set; } = new List<NhlPlayer>();
         public List<NhlGoalie> Goalies { get; private set; } = new List<NhlGoalie>();
 
+        /// <summary>
+        /// Return total goals for all players in the team
+        /// </summary>
+        public int TotalGoals
+        {
+            //get
+            //{
+            //    int total = 0;
+            //    foreach(NhlPlayer player in Players)
+            //    {
+            //        total += player.Goals;
+            //    }
+            //    return total;
+            //}
+            get => Players.Sum(p => p.Goals);
+        }
+
+        /// <summary>
+        /// Remove the first player with the jerseyNumber from the team
+        /// and return the player removed from the team.
+        /// </summary>
+        /// <param name="jerseyNumber">The jerseyNumber of the player remove</param>
+        /// <returns>The player that was removed.</returns>
+        public NhlPlayer? RemovePlayer(int jerseyNumber)
+        {
+            //NhlPlayer playerRemoved = null;
+
+            //for (int index = 0; index < Players.Count; index++)
+            //{
+            //    NhlPlayer currentPlayer = Players[index];
+            //    if (currentPlayer.JerseyNumber == jerseyNumber)
+            //    {
+            //        // Stop the loop
+            //        index = Players.Count;
+            //        // Assign the currentPlayer as the playerRemoved
+            //        playerRemoved = currentPlayer;
+            //    }
+            //}
+            //if (playerRemoved == null) 
+            //{
+            //    throw new ArgumentException($"There is no player with jersey number {jerseyNumber}");
+            //}
+
+            //return playerRemoved;
+
+            NhlPlayer? playerRemoved = Players
+                    .FirstOrDefault(currentPlayer => currentPlayer.JerseyNumber == jerseyNumber);
+            if (playerRemoved == null) 
+            {
+                throw new ArgumentException($"There is no player with jersey number {jerseyNumber}");
+            }
+            return playerRemoved;
+        }
+
         // Define methods to:
         // 1) Add a NhlPlayer
         //      - jerseyNumber must unique
@@ -93,8 +147,12 @@ namespace NhlClassLibrary
             //    }
             //}
             // Technique #2: Use the Exists() method of the List<T> class.
-            bool foundPlayer = Players.Exists(
+            //bool foundPlayer = Players.Exists(
+            //    currentPlayer => currentPlayer.JerseyNumber == newPlayer.JerseyNumber);
+            // Technique #3: Use the Any() method of the Enumerable class.
+            bool foundPlayer = Players.Any(
                 currentPlayer => currentPlayer.JerseyNumber == newPlayer.JerseyNumber);
+
             if (foundPlayer)
             {
                 throw new ArgumentException(
@@ -102,7 +160,6 @@ namespace NhlClassLibrary
                         nameof(newPlayer));
             }
             
-
             if (Players.Count >= 23) // double-check logic
             {
                 throw new InvalidOperationException("Team is full. Cannot add anymore players.");
