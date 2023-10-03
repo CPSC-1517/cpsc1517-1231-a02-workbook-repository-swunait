@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestingClassLibrary", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestingProject", "UnitTestingProject\UnitTestingProject.csproj", "{0D259060-B177-4DB0-AA22-F0123FEFD091}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCalculatorBlazorApp", "SimpleCalculatorBlazorApp\SimpleCalculatorBlazorApp.csproj", "{17C06780-DF12-4D35-BFF5-45059583E755}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0D259060-B177-4DB0-AA22-F0123FEFD091}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D259060-B177-4DB0-AA22-F0123FEFD091}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D259060-B177-4DB0-AA22-F0123FEFD091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17C06780-DF12-4D35-BFF5-45059583E755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17C06780-DF12-4D35-BFF5-45059583E755}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17C06780-DF12-4D35-BFF5-45059583E755}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17C06780-DF12-4D35-BFF5-45059583E755}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

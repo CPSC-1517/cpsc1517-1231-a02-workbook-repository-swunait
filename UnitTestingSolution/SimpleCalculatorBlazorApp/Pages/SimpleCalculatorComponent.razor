@@ -1,0 +1,76 @@
+﻿@page "/simple-calculator"
+@using UnitTestingClassLibrary
+
+@* The page directive allows a route to access this component  *@
+
+<h3>Simple Calculator</h3>
+
+<p>This simple calculator allows you to add, subtract, multiply or divide two numbers</p>
+
+@if(feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+<div>
+    <label for="num1">Num1</label>
+    <input id="num1" type="number" @bind="@num1" />
+</div>
+<div>
+    <label for="num2">Num2</label>
+    <input id="num2" type="number" @bind="@num2" />
+</div>
+<div>
+    <button @onclick="@AddNumbers" class="btn btn-primary"> + </button>
+    <button @onclick="@SubtractNumbers" class="btn btn-primary"> - </button>
+    <button @onclick="@MultiplyNumbers" class="btn btn-primary"> * </button>
+    <button @onclick="@DivideNumbers" class="btn btn-primary"> / </button>
+</div>
+
+@code {
+    private int num1 = 2;
+    private int num2 = 3;
+    private string? feedbackMessage;
+
+    public void AddNumbers()
+    {
+        // SimpleCalculator calculator = new SimpleCalculator(num1, num2);
+        // var calculator = new SimpleCalculator(num1, num2);
+        SimpleCalculator calculator = new (num1, num2);
+
+        int result = calculator.Add();
+        feedbackMessage = $"{num1} + {num2} = {result}";
+    }
+
+    public void SubtractNumbers()
+    {
+        // SimpleCalculator calculator = new SimpleCalculator(num1, num2);
+        // var calculator = new SimpleCalculator(num1, num2);
+        SimpleCalculator calculator = new(num1, num2);
+
+        int result = calculator.Subtract();
+        feedbackMessage = $"{num1} - {num2} = {result}";
+    }
+
+    public void MultiplyNumbers()
+    {
+        // SimpleCalculator calculator = new SimpleCalculator(num1, num2);
+        // var calculator = new SimpleCalculator(num1, num2);
+        SimpleCalculator calculator = new(num1, num2);
+
+        int result = calculator.Multiply();
+        feedbackMessage = $"{num1} * {num2} = {result}";
+    }
+
+    public void DivideNumbers()
+    {
+        // SimpleCalculator calculator = new SimpleCalculator(num1, num2);
+        // var calculator = new SimpleCalculator(num1, num2);
+        SimpleCalculator calculator = new(num1, num2);
+
+        decimal result = calculator.Divide();
+        feedbackMessage = $"{num1} / {num2} = {result}";
+    }
+}
