@@ -1,10 +1,5 @@
 ﻿using FluentAssertions;
 using NhlClassLibrary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace xUnitTestProject
 {
@@ -100,6 +95,40 @@ namespace xUnitTestProject
             // Then - Assert
             actualPlayer.JerseyNumber.Should().Be(jerseyNumber);
             currentTeam.Players.Should().ContainInConsecutiveOrder(expectedPlayers);
+        }
+
+        [Theory]
+        [InlineData(19)]
+        [InlineData(24)]
+        public void RemovePlayer_JerseyNotExists_ThrowsArgumentException(int jerseyNumber)
+        {
+            // Given - Arrange
+            // Create and initialize a list of players
+            List<NhlPlayer> expectedPlayers = new()
+            {
+                new NhlPlayer("Connor McDavid", 97, PlayerPosition.Center, 64, 89),
+                new NhlPlayer("Leon Draisaitl", 29, PlayerPosition.Center, 52, 76),
+                new NhlPlayer("Ryan Nugent-Hopkins", 93, PlayerPosition.Center, 37, 67),
+                new NhlPlayer("Zach Hyman", 18, PlayerPosition.LeftWing, 36, 47),
+                new NhlPlayer("Kailer Yamamoto", 56, PlayerPosition.RightWing, 10, 15),
+                new NhlPlayer("Mattias Ekholm", 14, PlayerPosition.Defense, 4, 10),
+                new NhlPlayer("Evander Kane", 91, PlayerPosition.LeftWing, 16, 12),
+            };
+
+            // Create a new NhlTeam and add each NhlPlayer in expectedPlayers
+            NhlTeam currentTeam = new();
+            foreach (var currentPlayer in expectedPlayers)
+            {
+                currentTeam.AddPlayer(currentPlayer);
+            }
+
+            // When - Act
+            Action action = () => currentTeam.RemovePlayer(jerseyNumber);
+
+            // Then - Assert
+            action.Should()
+                .Throw<ArgumentException>()
+                .WithMessage("*jersey number*");
         }
     }
 }
