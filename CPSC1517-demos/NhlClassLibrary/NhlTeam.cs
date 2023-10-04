@@ -90,7 +90,7 @@ namespace NhlClassLibrary
         /// </summary>
         /// <param name="jerseyNumber">The jerseyNumber of the player remove</param>
         /// <returns>The player that was removed.</returns>
-        public NhlPlayer? RemovePlayer(int jerseyNumber)
+        public NhlPlayer RemovePlayer(int jerseyNumber)
         {
             //NhlPlayer playerRemoved = null;
 
@@ -118,6 +118,9 @@ namespace NhlClassLibrary
             {
                 throw new ArgumentException($"There is no player with jersey number {jerseyNumber}");
             }
+
+            Players.Remove(playerRemoved);
+
             return playerRemoved;
         }
 
