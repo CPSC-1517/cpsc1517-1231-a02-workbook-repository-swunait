@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHLConsoleApp", "NHLConsole
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NHLBlazorApp", "NHLBlazorApp\NHLBlazorApp.csproj", "{C33DCF57-C9C5-46F9-A964-72ED12B018C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xUnitTestProject", "xUnitTestProject\xUnitTestProject.csproj", "{6FD6ACEB-0F12-4C71-9C4E-AE9318CC2F92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xUnitTestProject", "xUnitTestProject\xUnitTestProject.csproj", "{6FD6ACEB-0F12-4C71-9C4E-AE9318CC2F92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

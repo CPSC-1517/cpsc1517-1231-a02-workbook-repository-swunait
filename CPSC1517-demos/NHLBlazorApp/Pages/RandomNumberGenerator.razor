@@ -1,0 +1,56 @@
+﻿@page "/random-number-generator"
+
+<h3>Random Number Generator</h3>
+<p>This Blazor components allows you to generate a 
+    random number between 1 a max value you specify
+</p>
+
+@if (feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+<fieldset>
+    <div>
+        <label for="maxNumber">Max Number:</label>
+        <input id="maxNumber" type="number" 
+            @bind-value="@maxNumber" />
+    </div>
+    <div>
+        <button class="btn btn-primary" 
+                @onclick="GenerateRandomNumber">
+                Generate Number
+        </button>
+        <button class="btn btn-secondary"
+                @onclick="ClearMessage">
+            Clear
+        </button>
+    </div>
+</fieldset>
+
+@code {
+    // The maximum random number to generate
+    private int maxNumber = 50;
+    // The generated random number between 1 and maxNumber
+    private int randomNumber;
+    // A string for feedback message
+    private string? feedbackMessage;
+
+    // Define a method to generate a new random number
+    private void GenerateRandomNumber()
+    {
+        // Generate a random between 1 and maxNumber
+        randomNumber = Random.Shared.Next(1, maxNumber + 1);
+        // Create a feedback message
+        feedbackMessage = $"Your lucky number is {randomNumber}";
+    }
+
+    // Define a method to clear the form fields
+    private void ClearMessage()
+    {
+        feedbackMessage = null;
+    }
+
+}

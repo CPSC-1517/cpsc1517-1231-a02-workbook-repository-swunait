@@ -1,0 +1,70 @@
+﻿@page "/lotto-quick-pick"
+
+<h3>LottoQuickPick</h3>
+
+@if(quickPickNumbers.Count > 0)
+{
+    <ol>
+        @foreach(var num in quickPickNumbers)
+        {
+            <li>@num</li>
+        }
+    </ol>
+}
+
+<fieldset>
+    <p>Select lotto type:</p>
+    <div>
+        <label for="lotto649">Lotto 649</label>
+        <input id="lotto649" type="radio" name="lottoType" value="649"
+            checked="@(lottoType == "649")"
+            @onclick="@(() => lottoType = "649")" />
+    </div>
+    <div>
+        <label for="lottoMAX">Lotto MAX</label>
+        <input id="lottoMAX" type="radio" name="lottoType" value="MAX"
+            checked="@(lottoType == "MAX")"
+            @onclick="@(() => lottoType = "MAX")" />
+    </div>
+    <div>
+        <button class="btn btn-primary"
+                @onclick="GenerateQuickPick">
+            Generate Quick Pick
+        </button>
+    </div>
+
+</fieldset>
+
+@code {
+    // Define a field to track the lotto type as MAX or 649
+    private string lottoType = "MAX";
+    // Define a field that contains the list of generated numbers
+    private List<int> quickPickNumbers = new();
+
+    // Define a method to generate Quick Pick Numbers
+    private void GenerateQuickPick()
+    {
+        // The max number for Lotto MAX is 50 whereas Lotto 649 is 49
+        int maxLottoNumber = (lottoType == "MAX") ? 50 : 49;
+        // The max number of selection for Lotto MAX 7 whereas Lotto 649 is 6
+        int lottoSelections = (lottoType == "MAX") ? 7 : 6;
+        // Clear previous generated numbers
+        quickPickNumbers.Clear();
+        // Generate the quick pick numbers
+        while (quickPickNumbers.Count < lottoSelections)
+        {
+            // Generate a random number between 1 and maxLottoNumber
+            int randomNumber = Random.Shared.Next(1, maxLottoNumber);
+            // Add the randomNumber only if it is not in the list
+            if (!quickPickNumbers.Contains(randomNumber))
+            {
+                // Add the randomNumber to quickPicksNumbers
+                quickPickNumbers.Add(randomNumber);
+            }
+        }
+        // Sort the numbers in quickPickNumbers
+        quickPickNumbers.Sort();
+
+    }
+
+}

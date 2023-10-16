@@ -1,0 +1,28 @@
+﻿@page "/current-datetime"
+
+<h3>CurrentDateTime</h3>
+
+<p>This Blazor component displays the current date time.</p>
+
+<p>The current date time is <strong>@currentDateTime</strong></p>
+
+<button class="btn btn-primary" @onclick="UpdateDateTime">Refresh Time</button>
+
+@code {
+    private string currentDateTime = string.Empty;
+            // = DateTime.Now.ToString("ddd MMM d, yyyy h:mm:ss tt");
+
+    protected override void OnInitialized()
+    {
+        // base.OnInitialized();
+        currentDateTime
+            = DateTime.Now.ToString("ddd MMM d, yyyy h:mm:ss tt");
+    }
+
+    private void UpdateDateTime()
+    {
+        currentDateTime
+            = DateTime.Now.ToString("ddd MMM d, yyyy h:mm:ss tt");
+    }
+
+}
