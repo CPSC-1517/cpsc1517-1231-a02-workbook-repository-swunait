@@ -1,0 +1,109 @@
+﻿@page "/multiple-lotto-quick-pick"
+
+<h3>MultipleLottoQuickPick</h3>
+
+
+@if (quickPicks.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            @for(int num = 1; num <= lottoSelections; num++)
+            {
+                <th>@num</th>
+            }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var currentQuickPick in quickPicks)
+            {
+                <tr>
+                    @foreach(var currentNum in currentQuickPick)
+                    {
+                        <td>@currentNum</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<fieldset>
+    <p>Select lotto type:</p>
+    <div>
+        <label for="lotto649">Lotto 649</label>
+        <input id="lotto649" type="radio" name="lottoType" value="649"
+               checked="@(lottoType == "649")"
+        @onclick="@(() => lottoType = "649")" />
+    </div>
+    <div>
+        <label for="lottoMAX">Lotto MAX</label>
+        <input id="lottoMAX" type="radio" name="lottoType" value="MAX"
+               checked="@(lottoType == "MAX")"
+        @onclick="@(() => lottoType = "MAX")" />
+    </div>
+    <div>
+        <label for="quickPickCount">Number of quick picks</label>
+        <select id="quickPickCount" class="form-select"
+        @bind="quickPickCount">
+            @for (int count = 1; count <= 10; count++)
+            {
+                <option>@count</option>
+            }
+        </select>
+    </div>
+    <div>
+        <button class="btn btn-primary"
+        @onclick="GenerateQuickPick">
+            Generate Quick Pick
+        </button>
+    </div>
+
+</fieldset>
+
+@code {
+    private int quickPickCount = 1;
+    // Define a field to track the lotto type as MAX or 649
+    private string lottoType = "MAX";
+    // Define a field that contains the list of generated numbers
+    private List<List<int>> quickPicks = new();
+
+    private int lottoSelections;
+
+    // Define a method to generate Quick Pick Numbers
+    private void GenerateQuickPick()
+    {
+        // The max number for Lotto MAX is 50 whereas Lotto 649 is 49
+        int maxLottoNumber = (lottoType == "MAX") ? 50 : 49;
+        // The max number of selection for Lotto MAX 7 whereas Lotto 649 is 6
+        lottoSelections = (lottoType == "MAX") ? 7 : 6;
+        // Clear previous generated numbers
+        quickPicks.Clear();
+
+        // Setup loop to generate multiple quick picks numbers
+        for (int count = 1; count <= quickPickCount; count++)
+        {
+            // Define a list of integers for the quick picks
+            List<int> quickPickNumbers = new();
+            // Generate the quick pick numbers
+            while (quickPickNumbers.Count < lottoSelections)
+            {
+                // Generate a random number between 1 and maxLottoNumber
+                int randomNumber = Random.Shared.Next(1, maxLottoNumber);
+                // Add the randomNumber only if it is not in the list
+                if (!quickPickNumbers.Contains(randomNumber))
+                {
+                    // Add the randomNumber to quickPicksNumbers
+                    quickPickNumbers.Add(randomNumber);
+                }
+            }
+            // Sort the numbers in quickPickNumbers
+            quickPickNumbers.Sort();
+            // Add the quickPickNumbers to quickPicks
+            quickPicks.Add(quickPickNumbers);
+        }
+        
+
+    }
+
+}

@@ -1,0 +1,57 @@
+﻿@page "/login"
+@inject IWebHostEnvironment WebHostEnvironment
+
+<h3>Login</h3>
+
+@code {
+    // Define fields for form inputs
+    private string username;
+    private string password;
+
+    // Define a field for feedback message
+    private string? feedbackMessage;
+
+    // Define a Dictionary that contains our collection
+    // of valid username/password
+    private Dictionary<string, string> usersDictionary = new();
+
+    // Load data from the text users.csv into userDictionary
+    // after the blazor component has been initialized
+    protected override void OnInitialized()
+    {
+        string contentRootPath = WebHostEnvironment.ContentRootPath;
+        // string csvDataFilePath = $"{contentRootPath}\\Data\\users.csv";
+        string csvDataFilePath = $@"{contentRootPath}\Data\users.csv";
+        // Read the contents from the csvDataFile into usersDictionary
+        using(StreamReader reader = new StreamReader(csvDataFilePath))
+        {
+            // Read one line at a time until we reached EOF 
+            // EOF is when reader returns null
+            string? currentLine;
+            while ( (currentLine = reader.ReadLine()) != null)
+            {
+                // currentLine has two values: username, password
+                string[] tokens = currentLine.Split(',');
+                string csvUsername = tokens[0];
+                string csvPassword = tokens[1];
+                usersDictionary.Add(csvUsername, csvPassword);
+            }
+        }
+
+    }
+
+    private void onLogin()
+    {
+        // Check if the username/password exists in our dictionary
+        if (usersDictionary[username] == password)
+        {
+            // Valid username/password
+            feedbackMessage = "Valid username/password";
+        }
+        else
+        {
+            // Invalid username/password
+            feedbackMessage = "Invalid username/password";
+        }
+    }
+}
