@@ -1,4 +1,4 @@
-﻿@page "/multiple-lotto-quick-pick"
+﻿@page "/multiple-lotto-quick-pick/{LoginUsername?}"
 
 <h3>MultipleLottoQuickPick</h3>
 
@@ -61,7 +61,15 @@
 
 </fieldset>
 
+@if( LoginUsername != null)
+{
+    <p>You are login as @LoginUsername</p>
+}
+
 @code {
+    [Parameter]
+    public string? LoginUsername { get; set; }
+
     private int quickPickCount = 1;
     // Define a field to track the lotto type as MAX or 649
     private string lottoType = "MAX";

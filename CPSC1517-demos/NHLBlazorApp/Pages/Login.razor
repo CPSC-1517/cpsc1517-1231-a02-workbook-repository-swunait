@@ -1,12 +1,54 @@
 ﻿@page "/login"
 @inject IWebHostEnvironment WebHostEnvironment
+@inject NavigationManager CurrentNavigationManger
 
 <h3>Login</h3>
 
+<p>Enter your username and password to login.</p>
+@if (feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+@if (errorDictionary.Count > 0)
+{
+    <div class="alert alert-danger">
+        <p>Please fix the following issues:</p>
+        <ul>
+            @foreach(string errorMessage in errorDictionary.Values)
+            {
+                <li>@errorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<fieldset>
+    <div>
+        <label for="username">Username</label>
+        <input id="username" type="text" @bind="username" />
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input id="password" type="password" @bind="password" />
+    </div>
+    <div>
+        <button class="btn btn-primary" @onclick="onLogin">Login</button>
+    </div>
+</fieldset>
+
 @code {
+    // Define a field to track number of login attempts
+    private int loginAttempts = 0;
+
+    // Define a Dictionary for storing error messages
+    private Dictionary<string, string> errorDictionary = new();
+
     // Define fields for form inputs
-    private string username;
-    private string password;
+    private string username = string.Empty;
+    private string password = string.Empty;
 
     // Define a field for feedback message
     private string? feedbackMessage;
@@ -42,16 +84,61 @@
 
     private void onLogin()
     {
-        // Check if the username/password exists in our dictionary
-        if (usersDictionary[username] == password)
+        errorDictionary.Clear();
+        // Check if loginAttempts exceed max allowed attempts
+        if (loginAttempts >= 3)
         {
-            // Valid username/password
-            feedbackMessage = "Valid username/password";
+            feedbackMessage = "You have exceed the number of login attempts.";
         }
         else
         {
-            // Invalid username/password
-            feedbackMessage = "Invalid username/password";
+            // Validate that both username and password are not blank
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                // Add an error message for username
+                errorDictionary.Add("username", "Username cannot be blank.");
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                // Add an error message for password
+                errorDictionary.Add("password", "Password cannot be blank.");
+            }
+
+            // Check if there are any validation errors
+            if (errorDictionary.Count == 0)
+            {
+                // Check if the username exists in our dictionary
+                if (usersDictionary.ContainsKey(username))
+                {
+                    // Valid username
+                    // Check if password is for username
+                    if (usersDictionary[username] == password)
+                    {
+                        //feedbackMessage = "Valid username and password";
+                        // Navigate to "/multiple-lotto-quick-pick"
+                        CurrentNavigationManger.NavigateTo(
+                            $"/multiple-lotto-quick-pick/{username}");
+                    }
+                    else
+                    {
+                        //feedbackMessage = $"Invalid password for {username}";
+                        errorDictionary.Add("password", $"Invalid password for {username}");
+                        loginAttempts += 1;
+                        feedbackMessage = $"Login attempt #{loginAttempts}";
+                    }
+                }
+                else
+                {
+                    // Invalid username/password
+                    //feedbackMessage = "Invalid username.";
+                    errorDictionary.Add("username", $"Invalid username {username}");
+                    loginAttempts += 1;
+                    feedbackMessage = $"Login attempt #{loginAttempts}";
+                }
+            }
         }
+
+       
+
     }
 }

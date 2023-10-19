@@ -126,5 +126,56 @@ namespace NhlClassLibrary
             // return a string with value for Name,Position,JerseyNumber,Goals,Assists, and Points
             return $"{Name},{Position},{JerseyNumber},{Goals},{Assists},{Points}";
         }
+
+        /// <summary>
+        /// Converts a comma separated value of player info into a NhlPlayer object
+        /// </summary>
+        /// <param name="csvLine">The line of text to parse</param>
+        /// <returns>NHLPlayer with info from csvLine</returns>
+        public static NhlPlayer Parse(string csvLine)
+        {
+            // csvLine = Connor McDavid,Center,97,3,2,5
+            // The order of values are:
+            // 0 - Name
+            // 1 - Postion
+            // 2 - JerseyNumber
+            // 3 - Goals
+            // 4 - Assists
+            // 5 - Points
+            // Validate csvLine is not null
+            if (string.IsNullOrWhiteSpace(null))
+            {
+                throw new ArgumentNullException("csvLine", "csvLine cannot be blank.");
+            }
+            string[] tokens = csvLine.Split(',');
+            // Validate the number of values in tokens is exactly 6
+            if (tokens.Length != 6) 
+            {
+                throw new FormatException($"{csvLine} does not contain exactly 6 values");
+            }
+            // Return an NhlPlayer
+            string name = tokens[0];
+            PlayerPosition position = Enum.Parse<PlayerPosition>(tokens[1]);
+            int jerseyNumber = int.Parse(tokens[2]);
+            int goals = int.Parse(tokens[3]);
+            int assists = int.Parse(tokens[4]);
+            return new NhlPlayer(name,jerseyNumber,position,goals,assists);
+        }
+
+        public static bool TryParse(string csvLine, out NhlPlayer player)
+        {
+            bool result = false;
+            try
+            {
+                player = Parse(csvLine);
+                result = true;
+            }
+            catch
+            {
+                player = null!;
+            }
+
+            return result;
+        }
     }
 }
