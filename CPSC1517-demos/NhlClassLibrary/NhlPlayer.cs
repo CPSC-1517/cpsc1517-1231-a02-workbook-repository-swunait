@@ -151,7 +151,7 @@ namespace NhlClassLibrary
             // Validate the number of values in tokens is exactly 6
             if (tokens.Length != 6) 
             {
-                throw new FormatException($"{csvLine} does not contain exactly 6 values");
+                throw new FormatException($"{csvLine} is not in the correct format");
             }
             // Return an NhlPlayer
             string name = tokens[0];

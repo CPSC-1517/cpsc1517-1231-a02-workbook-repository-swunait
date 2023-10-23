@@ -1,0 +1,32 @@
+﻿@page "/players"
+@inject IWebHostEnvironment WebHostEnvironment
+@using NhlClassLibrary
+
+<h3>NhlPlayerListing</h3>
+
+@code {
+    private List<NhlPlayer> players = new();
+
+    protected override void OnInitialized()
+    {
+        string contentRootPath = WebHostEnvironment.ContentRootPath;
+        string csvDataFilePath = $@"{contentRootPath}\Data\NhlPlayers.csv";
+        // Read the contents from the csvDataFile into usersDictionary
+        using (StreamReader reader = new StreamReader(csvDataFilePath))
+        {
+            // Read one line at a time until we reached EOF
+            // EOF is when reader returns null
+            string? currentLine;
+            while ((currentLine = reader.ReadLine()) != null)
+            {
+                // currentLine has two values: username, password
+                NhlPlayer currentPlayer;
+                if (NhlPlayer.TryParse(currentLine, out currentPlayer))
+                {
+                    players.Add(currentPlayer);
+                }
+            }
+        }
+    }
+
+}
