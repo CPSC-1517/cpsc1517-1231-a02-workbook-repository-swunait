@@ -143,7 +143,7 @@ namespace NhlClassLibrary
             // 4 - Assists
             // 5 - Points
             // Validate csvLine is not null
-            if (string.IsNullOrWhiteSpace(null))
+            if (string.IsNullOrWhiteSpace(csvLine))
             {
                 throw new ArgumentNullException("csvLine", "csvLine cannot be blank.");
             }

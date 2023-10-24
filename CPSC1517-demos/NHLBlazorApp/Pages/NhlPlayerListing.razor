@@ -2,31 +2,106 @@
 @inject IWebHostEnvironment WebHostEnvironment
 @using NhlClassLibrary
 
-<h3>NhlPlayerListing</h3>
+<h3>NhlPlayer Listing</h3>
+
+@if (feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+@if (errors.Count > 0)
+{
+    <div class="alert alert-danger">
+        <p>The following errors has occurred:</p>
+        <ul>
+        @foreach(var currentError in errors)
+        {
+           <li>@currentError</li> 
+        }
+        </ul>
+    </div>
+}
+
+@if (players.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Jersey</th>
+                <th>Position</th>
+                <th>Goals</th>
+                <th>Assists</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var currentPlayer in players)
+            {
+                <tr>
+                    <td>@currentPlayer.Name</td>
+                    <td>@currentPlayer.JerseyNumber</td>
+                    <td>@currentPlayer.Position</td>
+                    <td>@currentPlayer.Goals</td>
+                    <td>@currentPlayer.Assists</td>
+                    <td>@currentPlayer.Points</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
     private List<NhlPlayer> players = new();
 
+    private List<string> errors = new();
+
+    private string? feedbackMessage;
+
     protected override void OnInitialized()
     {
         string contentRootPath = WebHostEnvironment.ContentRootPath;
-        string csvDataFilePath = $@"{contentRootPath}\Data\NhlPlayers.csv";
-        // Read the contents from the csvDataFile into usersDictionary
-        using (StreamReader reader = new StreamReader(csvDataFilePath))
+        string csvDataFilePath = $"{contentRootPath}/Data/NhlPlayers.csv";
+        try
         {
-            // Read one line at a time until we reached EOF
-            // EOF is when reader returns null
-            string? currentLine;
-            while ((currentLine = reader.ReadLine()) != null)
+            string[] allLines = File.ReadAllLines(csvDataFilePath);
+            foreach(var currentLine in allLines)
             {
-                // currentLine has two values: username, password
-                NhlPlayer currentPlayer;
-                if (NhlPlayer.TryParse(currentLine, out currentPlayer))
+                try
                 {
+                    NhlPlayer currentPlayer = NhlPlayer.Parse(currentLine);
                     players.Add(currentPlayer);
                 }
+                catch (Exception ex)
+                {
+                    errors.Add(ex.Message);
+                }
             }
+
+            // // Read the contents from the csvDataFile into usersDictionary
+            // using (StreamReader reader = new StreamReader(csvDataFilePath))
+            // {
+            //     // Read one line at a time until we reached EOF
+            //     // EOF is when reader returns null
+            //     string? currentLine;
+            //     while ((currentLine = reader.ReadLine()) != null)
+            //     {
+            //         // currentLine has two values: username, password
+            //         NhlPlayer currentPlayer;
+            //         if (NhlPlayer.TryParse(currentLine, out currentPlayer))
+            //         {
+            //             players.Add(currentPlayer);
+            //         }
+            //     }
+            // }
         }
+        catch(Exception ex)
+        {
+            feedbackMessage = ex.Message;
+        }
+
     }
 
 }
