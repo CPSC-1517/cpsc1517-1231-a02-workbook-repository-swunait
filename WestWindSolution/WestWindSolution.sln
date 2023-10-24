@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WestWindSystem", "WestWindSystem\WestWindSystem.csproj", "{ABB35392-5019-443D-A06F-5587F92A2DC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WestWindWebApp", "WestWindWebApp\WestWindWebApp.csproj", "{17CE5A7E-8117-4C10-B6C1-0A15A42A6150}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABB35392-5019-443D-A06F-5587F92A2DC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB35392-5019-443D-A06F-5587F92A2DC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB35392-5019-443D-A06F-5587F92A2DC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB35392-5019-443D-A06F-5587F92A2DC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17CE5A7E-8117-4C10-B6C1-0A15A42A6150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17CE5A7E-8117-4C10-B6C1-0A15A42A6150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17CE5A7E-8117-4C10-B6C1-0A15A42A6150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17CE5A7E-8117-4C10-B6C1-0A15A42A6150}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D55FE81-600E-4503-86EE-CB29E55F55B9}
+	EndGlobalSection
+EndGlobal
