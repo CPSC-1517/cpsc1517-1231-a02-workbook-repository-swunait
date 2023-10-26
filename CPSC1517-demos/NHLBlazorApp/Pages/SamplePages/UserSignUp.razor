@@ -1,0 +1,50 @@
+﻿@page "/sign-up"
+@* @inject IWebHostEnvironment WebHostEnvironent *@
+
+
+<h3>User Sign Up</h3>
+
+@* Check if there a single feedback to display *@
+@if(feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+@* Check if there a collection of error messages to display *@
+@if(errorMessages.Count > 0)
+{
+    <div class="alert alert-danger">
+    <p>Please the fix the following issues:</p>
+    <ul>
+    @foreach(var message in errorMessages)
+    {
+        <li>@message</li>
+    }
+    </ul>
+    </div>
+}
+
+<fieldset>
+    <div>
+        <label for="username">Username</label>
+        <input type="text" id="username" @bind="username" />
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" @bind="password"/>
+    </div>
+    <div>
+        <label for="confirmpassword">Confirm Password</label>
+        <input type="password" id="confirmpassword" @bind="confirmPassword"/>
+    </div>
+    <button class="btn btn-success" @onclick="OnSignUpClick">Sign Up</button>
+
+</fieldset>
+
+@code {
+
+
+
+}
