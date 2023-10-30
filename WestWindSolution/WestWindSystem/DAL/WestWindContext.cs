@@ -7,7 +7,7 @@ using WestWindSystem.Entities;
 
 namespace WestWindSystem.DAL;
 
-public partial class WestWindContext : DbContext
+internal partial class WestWindContext : DbContext
 {
     public WestWindContext(DbContextOptions<WestWindContext> options)
         : base(options)
