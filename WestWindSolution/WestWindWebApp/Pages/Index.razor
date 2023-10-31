@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using WestWindSystem.BLL
+@using WestWindSystem.Entities
 
 <PageTitle>Index</PageTitle>
 
@@ -9,3 +11,24 @@ Welcome to your new app.
 alt="Monitor Logo"
 title="Please buy me"
 height="400" width="400"/>
+
+<p>
+    Build Id @currentBuildVersion.Id, 
+    Major @currentBuildVersion.Major,
+    Minor @currentBuildVersion.Minor,
+    Build @currentBuildVersion.Build,
+    Release Date @currentBuildVersion.ReleaseDate.ToString("yyyy-MM-dd")
+</p>
+
+@code {
+
+    [Inject]
+    protected BuildVersionServices BuildVersionServices { get; set; }
+
+    private BuildVersion currentBuildVersion;
+
+    protected override void OnInitialized()
+    {
+        currentBuildVersion = BuildVersionServices.GetBuildVersion();
+    }
+}
