@@ -19,7 +19,7 @@ public partial class Category
     [StringLength(15)]
     public string CategoryName { get; set; }
 
-    [Column(TypeName = "ntext")]
+    //[Column(TypeName = "ntext")]
     public string Description { get; set; }
 
     public byte[] Picture { get; set; }

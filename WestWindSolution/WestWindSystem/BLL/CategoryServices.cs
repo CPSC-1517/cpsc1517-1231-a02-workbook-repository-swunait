@@ -24,10 +24,11 @@ namespace WestWindSystem.BLL
 
         public Category? Get(int categoryId)
         {
-            return _westWindContext
-                    .Categories
-                    .Where(c => c.CategoryId == categoryId)
-                    .FirstOrDefault();
+            //return _westWindContext
+            //        .Categories
+            //        .Where(c => c.CategoryId == categoryId)
+            //        .FirstOrDefault();
+            return _westWindContext.Find<Category>(categoryId);
         }
 
         public List<Category> FindByDescription(string partialDescription)

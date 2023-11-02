@@ -1,0 +1,41 @@
+﻿@page "/categories"
+
+<h3>Category List</h3>
+<div>
+    <label for="description">Category Description</label>
+    <input type="text" @bind="categoryDescription" />
+    <button class="btn btn-success" @onclick="OnSearchByDescription">Search</button>
+</div>
+
+
+@if (categories.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in categories)
+            {
+                <tr>
+                    <td>@item.CategoryId</td>
+                    <td>@item.CategoryName <br />
+                        @if (item.Picture != null)
+                        {
+                            <img src="data:@item.PictureMimeType;base64,@Convert.ToBase64String(item.Picture)"
+                                 alt="Category Image" />
+                        }
+                        
+                        
+                    </td>
+                    <td>@item.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
