@@ -1,0 +1,227 @@
+﻿@page "/project-selection"
+
+<h3>CPSC1517 Project Selection</h3>
+
+@if (feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+@if (errorMessages.Count > 0)
+{
+    <div class="alert alert-danger">
+        Please fix the following issues:
+        <ul>
+            @foreach (var msg in errorMessages)
+            {
+                <li>@msg</li>
+            }
+        </ul>
+    </div>
+}
+
+<fieldset class="container">
+    <div class="row">
+        <div class="col">
+            <div>
+                <label for="studentlist" class="form-label">Student List</label>
+                <textarea id="studentlist"
+                          rows="32"
+                          cols="25"
+                          class="form-control"
+                          @bind="studentNames">
+                </textarea>
+            </div>
+        </div>
+        <div class="col">
+            <div>
+                <button @onclick="OnPickRandomStudent" class="btn btn-primary">Pick Random Student</button>
+            </div>
+            <div>
+                <label for="currentstudent" class="form-label">Current Student</label>
+                <input id="currentstudent"
+                       type="text"
+                       class="form-control"
+                @bind="currentStudent"
+                       readonly />
+            </div>
+            <div>
+                <label for="projectscenario" class="form-label">Project Scenario</label>
+                <select id="projectscenario" class="form-control"
+                @bind="selectedScenario">
+                    <option value="">--- select project scenario ---</option>
+                    @foreach (var scenario in availableScenarios)
+                    {
+                        <option>@scenario</option>
+                    }
+                </select>
+                <button @onclick="OnConfirmProjectSelection" class="btn btn-primary">Confirm Project Selection</button>
+            </div>
+        </div>
+        <div class="col">
+            <div>
+                <label for="a01students" class="form-label">Scenario A01 Students</label>
+                <textarea id="a01students"
+                          rows="6"
+                          cols="15"
+                          class="form-control"
+                @bind="scenarioA01SelectedNames"></textarea>
+            </div>
+            <div>
+                <label for="a02students" class="form-label">Scenario A02 Students</label>
+                <textarea id="a02students"
+                          rows="6"
+                          cols="15"
+                          class="form-control"
+                @bind="scenarioA02SelectedNames"></textarea>
+            </div>
+            <div>
+                <label for="a03students" class="form-label">Scenario A03 Students</label>
+                <textarea id="a03students"
+                          rows="6"
+                          cols="15"
+                          class="form-control"
+                @bind="scenarioA03SelectedNames"></textarea>
+            </div>
+            <div>
+                <label for="a04students" class="form-label">Scenario A04 Students</label>
+                <textarea id="a04students"
+                          rows="6"
+                          cols="15"
+                          class="form-control"
+                @bind="scenarioA04SelectedNames"></textarea>
+            </div>
+            <div>
+                <label for="a05students" class="form-label">Scenario A05 Students</label>
+                <textarea id="a05students"
+                          rows="6"
+                          cols="15"
+                          class="form-control"
+                @bind="scenarioA05SelectedNames"></textarea>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+
+</fieldset>
+
+@code {
+    // Define C# fields to store HTML form field values
+    private string studentNames;
+    private string currentStudent;
+    private string[] availableScenarios = { "A01", "A02", "A03", "A04", "A05" };
+    private string? selectedScenario;
+    private List<string> scenarioA01Names = new();
+    private List<string> scenarioA02Names = new();
+    private List<string> scenarioA03Names = new();
+    private List<string> scenarioA04Names = new();
+    private List<string> scenarioA05Names = new();
+    private string scenarioA01SelectedNames;
+    private string scenarioA02SelectedNames;
+    private string scenarioA03SelectedNames;
+    private string scenarioA04SelectedNames;
+    private string scenarioA05SelectedNames;
+
+    private List<string> errorMessages = new();
+    private string? feedbackMessage;
+
+    // Define event handlers
+    public void OnConfirmProjectSelection()
+    {
+        errorMessages.Clear();
+        if (string.IsNullOrWhiteSpace(selectedScenario))
+        {
+            errorMessages.Add("Project Scenario selection is required");
+        }
+        if (string.IsNullOrWhiteSpace(currentStudent))
+        {
+            errorMessages.Add("Student name is required.");
+        }
+
+        if (errorMessages.Count == 0)
+        {
+            switch (selectedScenario)
+            {
+                case "A01":
+                    scenarioA01Names.Add(currentStudent);
+                    scenarioA01SelectedNames = "";
+                    foreach (var name in scenarioA01Names)
+                    {
+                        scenarioA01SelectedNames += name + "\n";
+                    }
+                    break;
+                case "A02":
+                    scenarioA02Names.Add(currentStudent);
+                    scenarioA02SelectedNames = "";
+                    foreach (var name in scenarioA02Names)
+                    {
+                        scenarioA02SelectedNames += name + "\n";
+                    }
+                    break;
+                case "A03":
+                    scenarioA03Names.Add(currentStudent);
+                    scenarioA03SelectedNames = "";
+                    foreach (var name in scenarioA03Names)
+                    {
+                        scenarioA03SelectedNames += name + "\n";
+                    }
+                    break;
+                case "A04":
+                    scenarioA04Names.Add(currentStudent);
+                    scenarioA04SelectedNames = "";
+                    foreach (var name in scenarioA04Names)
+                    {
+                        scenarioA04SelectedNames += name + "\n";
+                    }
+                    break;
+                case "A05":
+                    scenarioA05Names.Add(currentStudent);
+                    scenarioA05SelectedNames = "";
+                    foreach (var name in scenarioA05Names)
+                    {
+                        scenarioA05SelectedNames += name + "\n";
+                    }
+                    break;
+                default:
+                    feedbackMessage = "Invalid scenario selection";
+                    break;
+            }
+            // Each line in the textarea form field is separated by a backspace \n character
+            // Create an array of name for each name in the textarea
+            string[] studentNameArray = studentNames.Split("\n");
+
+            System.Text.StringBuilder sb = new();
+            foreach(var name in studentNameArray)
+            {
+                if( !name.Equals(currentStudent))
+                {
+                    sb.Append(name + "\n");
+                }
+            }
+            studentNames = sb.ToString();
+            //  Remove the currentStudent
+            currentStudent = string.Empty;
+        }
+
+
+    }
+
+    public void OnPickRandomStudent()
+    {
+        // Each line in the textarea form field is separated by a backspace \n character
+        // Create an array of name for each name in the textarea
+        string[] studentNameArray = studentNames.Split("\n");
+ 
+        // Pick a random name from studentList
+        int randomIndex = Random.Shared.Next(0, studentNameArray.Length);
+        // Assign currentStudent using the randomIndex
+        currentStudent = studentNameArray[randomIndex];
+        
+    }
+}
