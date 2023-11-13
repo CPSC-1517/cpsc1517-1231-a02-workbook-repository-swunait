@@ -1,0 +1,15 @@
+﻿@page "/products/query"
+
+<PageTitle>Product Query</PageTitle>
+
+<h3>Product Query</h3>
+
+<select class="form-select" aria-label="Product Category" @onch>
+    <option selected>Open this select menu</option>
+    @foreach(var currentCategory in categories)
+    {
+        <option value="@currentCategory.CategoryId">@currentCategory.CategoryName</option>
+
+    }
+</select>
+
