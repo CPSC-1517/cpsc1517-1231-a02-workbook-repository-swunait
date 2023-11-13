@@ -1,0 +1,36 @@
+﻿@page "/products/{CategoryId:int?}"
+
+<PageTitle>Products By Category</PageTitle>
+
+<h3>Products By Category</h3>
+
+@if(products.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Category Name</th>
+                <th class="text-end">Unit Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var currentProduct in products)
+            {
+                <tr>
+                    <td>@currentProduct.ProductId</td>
+                    <td>@currentProduct.ProductName</td>
+                    <td>@currentProduct.Category.CategoryName</td>
+                    <td class="text-end">@currentProduct.UnitPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+}
+else
+{
+    <p>There are no products with a CategoryID of @CategoryId</p>
+}
+
