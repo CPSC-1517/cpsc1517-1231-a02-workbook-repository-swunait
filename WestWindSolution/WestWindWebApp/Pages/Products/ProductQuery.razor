@@ -4,12 +4,59 @@
 
 <h3>Product Query</h3>
 
-<select class="form-select" aria-label="Product Category" @onch>
-    <option selected>Open this select menu</option>
-    @foreach(var currentCategory in categories)
-    {
-        <option value="@currentCategory.CategoryId">@currentCategory.CategoryName</option>
+<div class="mb-3">
+    <label for="selectedcategory" class="form-label">Product Category</label>
+    <select id="selectedcategory" class="form-select" aria-label="Product Category"
+      
+            @onchange="OnCategoryChanged">
+        <option selected value="0">Open this select menu</option>
+        @foreach(var currentCategory in categories)
+        {
+            <option value="@currentCategory.CategoryId">@currentCategory.CategoryName</option>
 
-    }
-</select>
+        }
+    </select>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <label for="productname" class="form-label">Product Name</label>
+    </div>
+    <div class="col-sm-8">
+        <input type="text" id="productname" class="form-control" @bind="productName"/>
+    </div>
+    <div class="col-sm">
+        <button class="btn btn-info" @onclick="OnProductNameSearch">Search</button>
+    </div>
+</div>
 
+@if(feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+@if(products.Count > 0)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th class="text-end">Unit Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var currentProduct in products)
+            {
+                <tr>
+                    <td>@currentProduct.ProductId</td>
+                    <td>@currentProduct.ProductName</td>
+                    <td>@currentProduct.Category.CategoryName</td>
+                    <td class="text-end">@currentProduct.UnitPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
