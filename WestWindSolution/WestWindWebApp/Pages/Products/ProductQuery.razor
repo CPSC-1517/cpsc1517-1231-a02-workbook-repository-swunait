@@ -4,7 +4,7 @@
 
 <h3>Product Query</h3>
 
-<div class="mb-3">
+@* <div class="mb-3">
     <label for="selectedcategory" class="form-label">Product Category</label>
     <select id="selectedcategory" class="form-select" aria-label="Product Category"
       
@@ -16,7 +16,7 @@
 
         }
     </select>
-</div>
+</div> *@
 <div class="row">
     <div class="col-sm">
         <label for="productname" class="form-label">Product Name</label>
@@ -43,7 +43,8 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Category</th>
+                <th>Category Name</th>
+                <th>Supplier Company Name</th>
                 <th class="text-end">Unit Price</th>
             </tr>
         </thead>
@@ -54,6 +55,7 @@
                     <td>@currentProduct.ProductId</td>
                     <td>@currentProduct.ProductName</td>
                     <td>@currentProduct.Category.CategoryName</td>
+                    <td>@currentProduct.Supplier.CompanyName</td>
                     <td class="text-end">@currentProduct.UnitPrice</td>
                 </tr>
             }

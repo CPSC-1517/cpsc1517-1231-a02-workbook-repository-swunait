@@ -1,0 +1,50 @@
+﻿@page "/shipments/query"
+
+<PageTitle>Shipment Query</PageTitle>
+<h3>Shipment Query</h3>
+
+@if (HasFeedback)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+@if (queryResultList.Count > 0)
+{
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th>ShipmentId</th>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Shipper Company Name</th>
+                <th>Customer Company Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var currentShipment in queryResultList)
+            {
+                <tr>
+                    <td>@currentShipment.ShipmentId</td>
+                    <td>@currentShipment.OrderId</td>
+                    <td>@currentShipment.Order.OrderDate</td>
+                    <td>@currentShipment.ShipViaNavigation.CompanyName</td>
+                    <td>@currentShipment.Order.Customer.CompanyName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<fieldset>
+    <div>
+        <label for="queryvalue" class="form-label">Shipment Date</label>
+        <input type="date" 
+            id="queryvalue" 
+            class="form-control"
+            @bind="queryShipmentDate"/>
+        <button class="btn btn-info" @onclick="OnSearchClick">Search</button>
+    </div>
+</fieldset>
+

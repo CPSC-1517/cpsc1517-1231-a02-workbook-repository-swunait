@@ -6,13 +6,13 @@ namespace WestWindWebApp.Pages.Products
 {
     public partial class ProductQuery
     {
-        [Inject]
-        protected CategoryServices CurrentCategoryServices { get; set; }
+        //[Inject]
+        //protected CategoryServices CurrentCategoryServices { get; set; }
 
         [Inject]
         protected ProductServices CurrentProductServices { get; set; }
 
-        private List<Category> categories = new (); // For populating the categories select element
+        //private List<Category> categories = new (); // For populating the categories select element
 
         private int selectedCategoryId = 0; // The current seleced category
       
@@ -24,28 +24,28 @@ namespace WestWindWebApp.Pages.Products
 
         protected override void OnInitialized()
         {
-            categories = CurrentCategoryServices.GetAll();
+            //categories = CurrentCategoryServices.GetAll();
         }
 
         private void OnCategoryChanged(ChangeEventArgs e)
         {
-            feedbackMessage = null;
-            selectedCategoryId = int.Parse(e.Value.ToString());
-            if (selectedCategoryId == 0)
-            {
-                products.Clear ();
-            }
-            else
-            {
-                try
-                {
-                    products = CurrentProductServices.GetByCategoryId(selectedCategoryId);
-                }
-                catch (Exception ex)
-                {
-                    feedbackMessage = $"Error fetch catching cateories with exception: {ex.Message}";
-                }
-            }
+            //feedbackMessage = null;
+            //selectedCategoryId = int.Parse(e.Value.ToString());
+            //if (selectedCategoryId == 0)
+            //{
+            //    products.Clear ();
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        products = CurrentProductServices.GetByCategoryId(selectedCategoryId);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        feedbackMessage = $"Error fetch catching cateories with exception: {ex.Message}";
+            //    }
+            //}
 
         }
 
@@ -61,7 +61,7 @@ namespace WestWindWebApp.Pages.Products
             {
                 try
                 {
-                    products = CurrentProductServices.GetByProductName(productName);
+                    products = CurrentProductServices.GetByProductNameOrCategoryNameOrSupplierCompanyName(productName);
                     if (products.Count == 0)
                     {
                         feedbackMessage = $"There are products with a product name of {productName}";

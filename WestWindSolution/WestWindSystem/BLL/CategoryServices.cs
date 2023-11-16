@@ -10,7 +10,7 @@ namespace WestWindSystem.BLL
 {
     public class CategoryServices
     {
-        private WestWindContext _westWindContext;
+        private readonly WestWindContext _westWindContext;
 
         internal CategoryServices(WestWindContext westWindContext) 
         {

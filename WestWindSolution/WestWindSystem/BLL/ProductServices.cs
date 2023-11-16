@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace WestWindSystem.BLL
 {
     public class ProductServices
     {
-        private WestWindContext _westWindContext;
+        private readonly WestWindContext _westWindContext;
 
         internal ProductServices(WestWindContext westWindContext) 
         { 
@@ -25,11 +26,23 @@ namespace WestWindSystem.BLL
                     .ToList();
         }
 
-        public List<Product> GetByProductName(string partialProductName)
+        /// <summary>
+        /// Return a list of Product with a matching partial value for
+        /// either the ProductName or Category CategoryName or Supplier CompanyName
+        /// </summary>
+        /// <param name="partialName">The value to search for</param>
+        /// <returns>A list of matching products</returns>
+        public List<Product> GetByProductNameOrCategoryNameOrSupplierCompanyName(
+            string partialName)
         {
             return _westWindContext
                 .Products
-                .Where(p => p.ProductName.Contains(partialProductName))
+                .Include(p => p.Category)
+                .Include(p => p.Supplier)
+                .Where(p => p.ProductName.Contains(partialName) 
+                            || p.Category.CategoryName.Contains(partialName)
+                            || p.Supplier.CompanyName.Contains(partialName) 
+                            )
                 .ToList();
         }
 

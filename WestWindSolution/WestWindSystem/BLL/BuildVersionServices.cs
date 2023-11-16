@@ -10,7 +10,7 @@ namespace WestWindSystem.BLL
 {
     public class BuildVersionServices
     {
-        private WestWindContext _westWindContext;
+        private readonly WestWindContext _westWindContext;
 
         internal BuildVersionServices(WestWindContext westWindContext)
         {

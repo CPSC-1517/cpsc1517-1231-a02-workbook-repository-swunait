@@ -16,9 +16,22 @@ namespace WestWindSystem
             this IServiceCollection services,
             Action<DbContextOptionsBuilder> options)
         {
+            // The 'options' parameter is an Action<DbContextOptionsBuilder> that typically
+            // configures the options for the DbContext, including specifying the database
+            // connection string.
+
+            services.AddDbContext<WestWindContext>(options);
+
             // Register the WestWindContext class, which is the DbContext for your application,
             // with the service collection. This allows the DbContext to be injected into other
             // parts of your application as a dependency.
+
+            services.AddTransient<ShipmentServices>((ServiceProvider) =>
+            {
+                var context = ServiceProvider.GetRequiredService<WestWindContext>();
+                return new ShipmentServices(context);
+            });
+
             services.AddTransient<BuildVersionServices>((ServiceProvider) =>
             {
                 var context = ServiceProvider.GetRequiredService<WestWindContext>();
@@ -38,11 +51,7 @@ namespace WestWindSystem
             });
 
 
-            // The 'options' parameter is an Action<DbContextOptionsBuilder> that typically
-            // configures the options for the DbContext, including specifying the database
-            // connection string.
-
-            services.AddDbContext<WestWindContext>(options);
+          
 
        
         }
