@@ -22,6 +22,8 @@ namespace WestWindSystem.BLL
         {
             return _westWindContext
                     .Products
+                    .Include(p => p.Category)
+                    .Include(p => p.Supplier)
                     .Where(p =>  p.CategoryId == categoryId)
                     .ToList();
         }

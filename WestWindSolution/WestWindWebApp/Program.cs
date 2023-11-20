@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //  :added
 //  code retrieves the WestWind connection string
-var connectionString = builder.Configuration.GetConnectionString("WestWind");
+var connectionString = builder.Configuration.GetConnectionString("LocalWestWindDB");
 
 //  added:
 //  Code the logic to add our class library services to IServiceCollection
@@ -32,6 +32,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
