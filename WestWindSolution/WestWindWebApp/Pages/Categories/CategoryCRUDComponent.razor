@@ -1,0 +1,38 @@
+﻿@page "/categorycrud"
+
+<PageTitle>Category CRUD</PageTitle>
+
+<h3>Category Maintaineance</h3>
+
+@if (feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+<fieldset>
+    <div class="mb-3">
+        <label for="categoryName" class="form-label">Category Name</label>
+        <input @bind="currentCategory.CategoryName"
+               class="form-control"
+               id="categoryName" />
+    </div>
+    <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea @bind="currentCategory.Description"
+               class="form-control"
+               id="description"
+               rows="3"
+               cols="50"
+        >
+        </textarea>
+    </div>
+</fieldset>
+<div>
+    <button @onclick="OnClickSave" class="btn btn-success">
+        @(currentCategory.CategoryId == 0 ? "Add" : "Update")
+    </button>
+    <button @onclick="OnClickDelete" class="btn btn-danger">
+        Delete
+    </button>
+</div>

@@ -1,0 +1,21 @@
+﻿
+
+<PageTitle>Category CRUD</PageTitle>
+
+<h3>Category Maintaineance</h3>
+
+@if (feedbackMessage != null) 
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+<fieldset>
+    <div class="mb-3">
+        <label for="categoryName" class="form-label">Category Name</label>
+        <input @bind="currrentCategory.CategoryName"
+                class="form-control"
+                id="categoryName"
+                />
+    </div>
+</fieldset>
