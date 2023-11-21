@@ -1,4 +1,4 @@
-﻿@page "/categories"
+﻿@page "/query/categories"
 
 <h3>Category List</h3>
 <div>
@@ -17,6 +17,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Action</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -32,7 +33,8 @@
                         }
                     </td>
                     <td>@item.Description</td>
-                    <td><a href="/products/category/@item.CategoryId">view products</a></td>
+                    <td><a href="/query/products/category/@item.CategoryId">view products</a></td>
+                    <td><a href="/crud/categorycrud/@item.CategoryId">edit</a></td>
                 </tr>
             }
         </tbody>

@@ -1,4 +1,4 @@
-﻿@page "/categorycrud"
+﻿@page "/crud/categorycrud/{CategoryId:int?}"
 
 <PageTitle>Category CRUD</PageTitle>
 
@@ -32,7 +32,12 @@
     <button @onclick="OnClickSave" class="btn btn-success">
         @(currentCategory.CategoryId == 0 ? "Add" : "Update")
     </button>
-    <button @onclick="OnClickDelete" class="btn btn-danger">
-        Delete
-    </button>
-</div>
+    @if (CategoryId.HasValue && CategoryId.Value > 0)
+    {
+        <button @onclick="OnClickDelete" class="btn btn-danger">
+            Delete
+        </button>       
+    }
+    <button @onclick="OnClickCancelEdit"  class="btn btn-warning rounded-pill">Clear</button>
+    <button @onclick="OnClickNavigateToCategorySelection" class="btn btn-secondary rounded-pill">Return to Category Selection</button>
+ </div>

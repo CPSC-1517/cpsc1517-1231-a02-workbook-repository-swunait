@@ -7,6 +7,10 @@ namespace WestWindWebApp.Pages.Categories
 {
     public partial class CategoryCRUDComponent
     {
+        [Parameter]
+        public int? CategoryId { get; set; }
+
+
         [Inject]
         protected CategoryServices CurrentCategoryServices { get; set; }
 
@@ -25,6 +29,7 @@ namespace WestWindWebApp.Pages.Categories
                 {
                     int categoryId = CurrentCategoryServices.AddCategory(currentCategory);
                     feedbackMessage = $"Created category with id {categoryId}";
+                    CurrentNavigationManager.NavigateTo($"/crud/categorycrud/{categoryId}");
                 }
                 else
                 {
@@ -34,17 +39,20 @@ namespace WestWindWebApp.Pages.Categories
             }
             catch (ArgumentException ex)
             {
-                feedbackMessage = ex.Message;
+                feedbackMessage = GetInnerException(ex).Message;
             }
             catch (Exception ex)
             {
-                feedbackMessage = $"Create was not successful with exception {ex.Message}";
+                feedbackMessage = $"Create was not successful with exception {GetInnerException(ex).Message}";
             }
         }
 
 
         [Inject]
         protected IJSRuntime CurrentJSRuntime { get; set; } // Required to execute javascript
+
+        [Inject]
+        protected NavigationManager CurrentNavigationManager { get; set; }  
 
         private async void OnClickDelete()
         {
@@ -56,13 +64,54 @@ namespace WestWindWebApp.Pages.Categories
                     CurrentCategoryServices.DeleteCategory(currentCategory.CategoryId);
                     currentCategory = new();
                     feedbackMessage = "Delete was successful";
+                    CurrentNavigationManager.NavigateTo("/crud/categorycrud");
+
                 }
                 catch(Exception ex)
                 {
-                    feedbackMessage = $"Delete failed with exception {ex.Message}";
+                    feedbackMessage = $"Delete failed with exception {GetInnerException(ex).Message}";
                 }
                 await InvokeAsync(StateHasChanged);
             }
+        }
+        
+        private async void OnClickNavigateToCategorySelection()
+        {
+            if (await CurrentJSRuntime.InvokeAsync<bool>(
+                "confirm",
+                "Are you sure you want to navigate to category selection and lose all unsaved changes"))
+            {
+                CurrentNavigationManager.NavigateTo("/query/categories");
+            }
+        }
+
+        private async void OnClickCancelEdit()
+        {
+            if (await CurrentJSRuntime.InvokeAsync<bool>(
+                "confirm",
+                "Are you sure you want to clear the form and lose all unsaved changes?"))
+            {
+                currentCategory = new();
+                CurrentNavigationManager.NavigateTo("/crud/categorycrud");
+
+            }
+        }
+
+        protected override void OnInitialized()
+        {
+            // Check if CategoryId parameter has a value
+            if (CategoryId.HasValue)
+            {
+                // Fetch from the database a Category contain the CategoryId value
+                currentCategory = CurrentCategoryServices.Get(CategoryId ?? 0);
+            }
+        }
+
+        private Exception GetInnerException(Exception ex)
+        {
+            while (ex.InnerException != null)
+                ex = ex.InnerException;
+            return ex;
         }
 
     }
