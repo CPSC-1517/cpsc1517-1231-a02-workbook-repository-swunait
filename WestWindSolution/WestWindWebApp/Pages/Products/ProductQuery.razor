@@ -4,29 +4,39 @@
 
 <h3>Product Query</h3>
 
-<div class="mb-3">
-    <label for="selectedcategory" class="form-label">Product Category</label>
+<div class="row">
+    <div class="col-sm">
+        <label for="selectedcategory" class="form-label">Product Category</label>
+    </div>
+    <div class="col-sm-6">
     <select id="selectedcategory" class="form-select" aria-label="Product Category"
-      
             @onchange="OnCategoryChanged">
-        <option selected value="0">Open this select menu</option>
+        <option selected=@(selectedCategoryId == 0) value="0">Open this select menu</option>
         @foreach(var currentCategory in categories)
         {
-            <option value="@currentCategory.CategoryId">@currentCategory.CategoryName</option>
+            <option value="@currentCategory.CategoryId" 
+                    selected=@(currentCategory.CategoryId == selectedCategoryId)>
+                    @currentCategory.CategoryName
+            </option>
 
         }
     </select>
+    </div>
+    <div class="col-sm">
+        <button @onclick="OnClickSearchByCategory" class="btn btn-info">Search</button>
+        <button @onclick="OnClickCancel" class="btn btn-secondary">Clear</button>
+    </div>
 </div>
 
 <div class="row">
     <div class="col-sm">
-        <label for="productname" class="form-label">Product Name</label>
+        <label for="productname" class="form-label">ProductName/CategoryName/Supplier</label>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         <input type="text" id="productname" class="form-control" @bind="productName"/>
     </div>
     <div class="col-sm">
-        <button class="btn btn-info" @onclick="OnProductNameSearch">Search</button>
+        <button class="btn btn-info" @onclick="OnProductNameSearch">Search By Name</button>
     </div>
 </div>
 

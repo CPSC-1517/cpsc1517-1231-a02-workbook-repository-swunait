@@ -27,10 +27,9 @@ namespace WestWindWebApp.Pages.Products
             categories = CurrentCategoryServices.GetAll();
         }
 
-        private void OnCategoryChanged(ChangeEventArgs e)
+        private void OnClickSearchByCategory()
         {
             feedbackMessage = null;
-            selectedCategoryId = int.Parse(e.Value.ToString());
             if (selectedCategoryId == 0)
             {
                 products.Clear();
@@ -46,6 +45,33 @@ namespace WestWindWebApp.Pages.Products
                     feedbackMessage = $"Error fetch catching cateories with exception: {ex.Message}";
                 }
             }
+        }
+
+        private void OnClickCancel()
+        {
+            selectedCategoryId = 0;
+            products.Clear();
+        }
+
+        private void OnCategoryChanged(ChangeEventArgs e)
+        {
+            feedbackMessage = null;
+            selectedCategoryId = int.Parse(e.Value.ToString());
+            //if (selectedCategoryId == 0)
+            //{
+            //    products.Clear();
+            //}
+            //else
+            //{
+            //    try
+            //    {
+            //        products = CurrentProductServices.GetByCategoryId(selectedCategoryId);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        feedbackMessage = $"Error fetch catching cateories with exception: {ex.Message}";
+            //    }
+            //}
 
         }
 
