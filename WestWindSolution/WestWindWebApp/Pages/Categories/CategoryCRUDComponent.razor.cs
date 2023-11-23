@@ -81,6 +81,7 @@ namespace WestWindWebApp.Pages.Categories
                 "confirm",
                 "Are you sure you want to navigate to category selection and lose all unsaved changes"))
             {
+                CurrentCategoryServices.UndoChanges();
                 CurrentNavigationManager.NavigateTo("/query/categories");
             }
         }
@@ -91,7 +92,6 @@ namespace WestWindWebApp.Pages.Categories
                 "confirm",
                 "Are you sure you want to clear the form and lose all unsaved changes?"))
             {
-                currentCategory = new();
                 CurrentNavigationManager.NavigateTo("/crud/categorycrud");
 
             }

@@ -94,5 +94,10 @@ namespace WestWindSystem.BLL
             int rowsDeleted = _westWindContext.SaveChanges();
             return rowsDeleted;
         }
+
+        public void UndoChanges()
+        {
+            _westWindContext.ChangeTracker.Clear();
+        }
     }
 }
