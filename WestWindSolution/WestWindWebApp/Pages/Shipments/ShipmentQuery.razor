@@ -1,4 +1,5 @@
 ﻿@page "/query/shipments"
+@using WestWindWebApp.BlazorPagination
 
 <PageTitle>Shipment Query</PageTitle>
 <h3>Shipment Query</h3>
@@ -9,6 +10,24 @@
         @feedbackMessage
     </div>
 }
+
+<fieldset>
+    <div>
+        <label for="fromdate" class="form-label">From Shipment Date</label>
+        <input type="date"
+               id="fromdate"
+               class="form-control"
+               @bind="queryFromShipmentDate" />
+        <label for="todate" class="form-label">To Shipment Date</label>
+        <input type="date"
+               id="todate"
+               class="form-control"
+               @bind="queryToShipmentDate" />
+        <button class="btn btn-info" @onclick="OnSearchClick">Search without Paging</button>
+        <button class="btn btn-success" @onclick="OnSearchClickWithPaging">Search with Paging</button>
+    </div>
+</fieldset>
+
 
 @if (queryResultList.Count > 0)
 {
@@ -23,7 +42,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var currentShipment in queryResultList)
+            @foreach (var currentShipment in queryResultList)
             {
                 <tr>
                     <td>@currentShipment.ShipmentId</td>
@@ -34,17 +53,48 @@
                 </tr>
             }
         </tbody>
+
     </table>
 }
 
-<fieldset>
-    <div>
-        <label for="queryvalue" class="form-label">Shipment Date</label>
-        <input type="date" 
-            id="queryvalue" 
-            class="form-control"
-            @bind="queryShipmentDate"/>
-        <button class="btn btn-info" @onclick="OnSearchClick">Search</button>
-    </div>
-</fieldset>
 
+@if (PaginatorShipmentSearch.RowCount > 0)
+{
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th>ShipmentId</th>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Shipper Company Name</th>
+                <th>Customer Company Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var currentShipment in PaginatorShipmentSearch.Results)
+            {
+                <tr>
+                    <td>@currentShipment.ShipmentId</td>
+                    <td>@currentShipment.OrderId</td>
+                    <td>@currentShipment.Order.OrderDate</td>
+                    <td>@currentShipment.ShipViaNavigation.CompanyName</td>
+                    <td>@currentShipment.Order.Customer.CompanyName</td>
+                </tr>
+            }
+        </tbody>
+       
+    </table>
+    <div class="center">
+        <BlazorPager CurrentPage="PaginatorShipmentSearch.CurrentPage"
+                     PageCount="PaginatorShipmentSearch.PageCount"
+                     VisiblePages="3"
+                     ShowFirstLast="true"
+                     ShowPageNumbers="true"
+                     FirstText="&laquo;"
+                     LastText="&raquo;"
+                     NextText="&rsaquo;"
+                     PreviousText="&lsaquo;"
+                     OnPageChanged="(async e => { CurrentPage = e; await OnSearchClickWithPaging();})">
+        </BlazorPager>
+    </div>
+}
