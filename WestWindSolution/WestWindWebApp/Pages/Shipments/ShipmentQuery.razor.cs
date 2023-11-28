@@ -17,7 +17,6 @@ namespace WestWindWebApp.Pages.Shipments
         //paginator collection of customer Search view
         protected PagedResult<Shipment> PaginatorShipmentSearch { get; set; } = new();
 
-
         #endregion
 
         [Inject]

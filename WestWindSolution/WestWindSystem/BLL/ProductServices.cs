@@ -18,6 +18,38 @@ namespace WestWindSystem.BLL
             _westWindContext = westWindContext;
         }
 
+        public int Add(Product newProduct)
+        {
+            // Validate that newProduct is not null
+            if (newProduct == null)
+            {
+                throw new ArgumentNullException(nameof(newProduct),"A new product is required.");
+            }
+
+
+            newProduct.Discontinued = false;
+            _westWindContext.Products.Add(newProduct);
+            _westWindContext.SaveChanges();
+            return newProduct.ProductId;
+        }
+
+        public int Update(Product existingProduct) 
+        {
+            _westWindContext.Products.Update(existingProduct);
+            int rowsUpdated = _westWindContext.SaveChanges();
+            return rowsUpdated;
+        }
+
+        public int Delete(Product existingProduct) 
+        {
+            //_westWindContext.Products.Remove(existingProduct); // hard-delete
+            //int rowsDeleted = _westWindContext.SaveChanges();
+            //return rowsDeleted;
+
+            existingProduct.Discontinued = true;    // soft-delete
+            return Update(existingProduct);
+        }
+
         public List<Product> GetByCategoryId(int categoryId)
         {
             return _westWindContext

@@ -1,0 +1,96 @@
+﻿@page "/crud/productcrud"
+
+<PageTitle>Product CRUD</PageTitle>
+
+<h3>Product CRUD</h3>
+
+@if (feedbackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedbackMessage
+    </div>
+}
+
+<fieldset>
+    <div class="mb-3">
+        <label for="ProductId" class="form-label">Product ID</label>
+        <input @bind="currentProduct.ProductId"
+               type="number"
+               class="form-control"
+               id="ProductId"
+               readonly>
+    </div>
+    <div class="mb-3">
+        <label for="productName" class="form-label">Product Name</label>
+        <input @bind="currentProduct.ProductName"
+               type="text"
+               class="form-control"
+               id="productName">
+    </div>
+    <div class="mb-3">
+        <label for="UnitPrice" class="form-label">Unit Price</label>
+        <input @bind="currentProduct.UnitPrice"
+               type="number"
+               class="form-control"
+               id="UnitPrice">
+    </div>
+    <div class="mb-3">
+        <label for="categoryid" class="form-label">Category</label>
+        <select @bind="currentProduct.CategoryId"
+                class="form-control"
+                id="categoryid">
+
+            <option value="0">--- select a category---</option>
+            @foreach (var currentCategory in categories)
+            {
+                <option value="@currentCategory.CategoryId" >
+                    @currentCategory.CategoryName
+                </option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="supplierid" class="form-label">Supplier</label>
+        <select @bind="currentProduct.SupplierId"
+                class="form-control"
+                id="supplierid">
+
+            <option value="0">--- select a supplier---</option>
+            @foreach (var currentSupplier in suppliers)
+            {
+                <option value="@currentSupplier.SupplierId">
+                    @currentSupplier.CompanyName
+                </option>
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="QuantityPerUnit" class="form-label">Quantity Per Unit</label>
+        <input @bind="currentProduct.QuantityPerUnit"
+               type="text"
+               class="form-control"
+               id="QuantityPerUnit">
+    </div>
+
+    <div class="mb-3">
+        <label for="MinimumOrderQuantity" class="form-label">MinimumOrderQuantity</label>
+        <input @bind="currentProduct.MinimumOrderQuantity"
+               type="text"
+               class="form-control"
+               id="MinimumOrderQuantity">
+    </div>
+
+    <div class="mb-3">
+        <label for="UnitsOnOrder" class="form-label">Units On Order</label>
+        <input @bind="currentProduct.UnitsOnOrder"
+               type="number"
+               class="form-control"
+               id="UnitsOnOrder">
+    </div>
+
+</fieldset>
+<div>
+    <button @onclick="OnClickSave" class="btn btn-success">@(currentProduct.ProductId == 0 ? "Create" : "Update")</button>
+    <button @onclick="OnClickDelete" class="btn btn-danger" disabled="@(currentProduct.ProductId == 0)">Delete</button>
+    <button @onclick="OnClickCancel" class="btn btn-secondary" disabled="@(currentProduct.ProductId == 0)">Cancel</button>
+</div>
