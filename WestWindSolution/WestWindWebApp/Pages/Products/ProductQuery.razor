@@ -1,4 +1,5 @@
 ﻿@page "/query/products"
+@using WestWindWebApp.BlazorPagination
 
 <PageTitle>Product Query</PageTitle>
 
@@ -33,10 +34,10 @@
         <label for="productname" class="form-label">ProductName/CategoryName/Supplier</label>
     </div>
     <div class="col-sm-6">
-        <input type="text" id="productname" class="form-control" @bind="productName"/>
+        <input type="text" id="productname" class="form-control" @bind="searchValue" />
     </div>
     <div class="col-sm">
-        <button class="btn btn-info" @onclick="OnProductNameSearch">Search By Name</button>
+        <button class="btn btn-info" @onclick="OnProductSearch">Search By Name</button>
     </div>
 </div>
 
@@ -47,7 +48,7 @@
     </div>
 }
 
-@if(products.Count > 0)
+@if (ProductsQueryResult.RowCount > 0)
 {
     <table class="table table-striped">
         <thead>
@@ -60,7 +61,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var currentProduct in products)
+            @foreach (var currentProduct in ProductsQueryResult.Results)
             {
                 <tr>
                     <td>@currentProduct.ProductId</td>
@@ -72,4 +73,17 @@
             }
         </tbody>
     </table>
+    <div class="center">
+        <BlazorPager CurrentPage="ProductsQueryResult.CurrentPage"
+                     PageCount="ProductsQueryResult.PageCount"
+                     VisiblePages="3"
+                     ShowFirstLast="true"
+                     ShowPageNumbers="true"
+                     FirstText="&laquo;"
+                     LastText="&raquo;"
+                     NextText="&rsaquo;"
+                     PreviousText="&lsaquo;"
+                     OnPageChanged="(async e => { CurrentPage = e; await OnProductSearch();})">
+        </BlazorPager>
+    </div>
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WestWindSystem.DAL;
 using WestWindSystem.Entities;
+using WestWindSystem.Paginator;
 
 namespace WestWindSystem.BLL
 {
@@ -79,6 +80,23 @@ namespace WestWindSystem.BLL
                             )
                 .ToList();
         }
+
+        public Task<PagedResult<Product>> GetByProductNameOrCategoryNameOrSupplierCompanyName(
+            string partialName,
+            int page,
+            int pageSize)
+        {
+            var query = _westWindContext
+               .Products
+               .Include(p => p.Category)
+               .Include(p => p.Supplier)
+               .Where(p => p.ProductName.Contains(partialName)
+                           || p.Category.CategoryName.Contains(partialName)
+                           || p.Supplier.CompanyName.Contains(partialName)
+                           );
+            return Task.FromResult(query.ToPagedResult(page, pageSize));
+        }
+
 
     }
 }

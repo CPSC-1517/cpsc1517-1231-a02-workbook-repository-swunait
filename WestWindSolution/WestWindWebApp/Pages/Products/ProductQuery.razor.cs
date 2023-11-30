@@ -1,11 +1,43 @@
 ﻿using Microsoft.AspNetCore.Components;
 using WestWindSystem.BLL;   // for CategoryServices, ProductServices
-using WestWindSystem.Entities;   // for Category, Product
+using WestWindSystem.Entities;
+using WestWindSystem.Paginator;   // for Category, Product
 
 namespace WestWindWebApp.Pages.Products
 {
     public partial class ProductQuery
     {
+        #region Paginator
+        // Desire current page size
+        private const int PAGE_SIZE = 10;
+        // Currente page for the paginator
+        protected int CurrentPage { get; set; } = 1;
+        // Paginator collection of product search results
+        protected PagedResult<Product> ProductsQueryResult { get; set; } = new();
+
+        private async Task OnProductSearch()
+        {
+            // Clear any previous feedback message
+            feedbackMessage = null;
+
+            try
+            {
+                ProductsQueryResult = await CurrentProductServices.GetByProductNameOrCategoryNameOrSupplierCompanyName(
+                    searchValue, CurrentPage, PAGE_SIZE);
+                if (ProductsQueryResult.RowCount == 0)
+                {
+                    feedbackMessage = "No result returned.";
+                }
+            }
+            catch(Exception ex)
+            {
+                feedbackMessage = $"Error executing query with exception: {GetInnerException(ex).Message}";
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+        #endregion
+
         [Inject]
         protected CategoryServices CurrentCategoryServices { get; set; }
 
@@ -20,7 +52,7 @@ namespace WestWindWebApp.Pages.Products
 
         private string? feedbackMessage;
 
-        private string? productName;
+        private string? searchValue;
 
         protected override void OnInitialized()
         {
@@ -78,7 +110,7 @@ namespace WestWindWebApp.Pages.Products
         private void OnProductNameSearch()
         {
             feedbackMessage = null;
-            if (string.IsNullOrWhiteSpace(productName))
+            if (string.IsNullOrWhiteSpace(searchValue))
             {
                 feedbackMessage = "You must enter at least one character to serach for.";
                 products.Clear();
@@ -87,10 +119,10 @@ namespace WestWindWebApp.Pages.Products
             {
                 try
                 {
-                    products = CurrentProductServices.GetByProductNameOrCategoryNameOrSupplierCompanyName(productName);
+                    products = CurrentProductServices.GetByProductNameOrCategoryNameOrSupplierCompanyName(searchValue);
                     if (products.Count == 0)
                     {
-                        feedbackMessage = $"There are products with a product name of {productName}";
+                        feedbackMessage = $"There are products with a product name of {searchValue}";
                     }
                 }
                 catch (Exception ex)
@@ -100,5 +132,14 @@ namespace WestWindWebApp.Pages.Products
             }
 
         }
+
+        private Exception GetInnerException(Exception ex)
+        {
+            while (ex.InnerException != null)
+                ex = ex.InnerException;
+            return ex;
+        }
+
     }
+
 }
