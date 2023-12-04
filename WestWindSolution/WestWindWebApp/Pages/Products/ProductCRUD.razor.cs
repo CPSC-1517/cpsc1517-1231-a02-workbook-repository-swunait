@@ -1,6 +1,7 @@
 ﻿using WestWindSystem.Entities; // for Product, Category, Supplier
 using WestWindSystem.BLL; // for ProductServices, CategoryServices, SupplierServices
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace WestWindWebApp.Pages.Products
 {
@@ -16,6 +17,8 @@ namespace WestWindWebApp.Pages.Products
         #endregion
 
         #region properties
+
+
         [Inject]
         protected ProductServices CurrentProductServices { get; set; }
 
@@ -25,12 +28,25 @@ namespace WestWindWebApp.Pages.Products
         [Inject]
         protected SupplierServices CurrentSupplierSevice { get; set; }
 
+        [Inject]
+        protected IJSRuntime CurrentJSRuntime { get; set; } // Required to execute javascript
+
+        [Inject]
+        protected NavigationManager CurrentNavigationManager { get; set; }
+
+        [Parameter]
+        public int? ProductId { get; set; }
+
         #endregion
 
         #region methods
 
         protected override void OnInitialized()
         {
+            if (ProductId != null)
+            {
+                currentProduct = CurrentProductServices.GetById(ProductId ?? 0);
+            }
             categories = CurrentCategoryServices.GetAll();
             suppliers = CurrentSupplierSevice.GetAll();
         }
@@ -39,8 +55,16 @@ namespace WestWindWebApp.Pages.Products
         {
             try
             {
-                int productId = CurrentProductServices.Add(currentProduct);
-                feedbackMessage = $"Successfully created product with productId {productId}";
+                if (currentProduct.ProductId == 0)
+                {
+                    int productId = CurrentProductServices.Add(currentProduct);
+                    feedbackMessage = $"Successfully created product with productId {productId}";
+                }
+                else
+                {
+                    CurrentProductServices.Update(currentProduct);
+                    feedbackMessage = "Successfully updated product.";
+                }
             }
             catch (Exception ex)
             {
@@ -48,9 +72,25 @@ namespace WestWindWebApp.Pages.Products
             }
         }
 
-        private void OnClickDelete()
+        private async void OnClickDelete()
         {
+            if (await CurrentJSRuntime.InvokeAsync<bool>(
+                "confirm", "Are you sure you wanto to delete this item?"))
+            {
+                try
+                {
+                    CurrentProductServices.Delete(currentProduct);
+                    currentProduct = new();
+                    feedbackMessage = "Delete was successful";
+                    CurrentNavigationManager.NavigateTo("/crud/productcrud");
 
+                }
+                catch (Exception ex)
+                {
+                    feedbackMessage = $"Delete failed with exception {GetInnerException(ex).Message}";
+                }
+                await InvokeAsync(StateHasChanged);
+            }
         }
 
         private void OnClickCancel()

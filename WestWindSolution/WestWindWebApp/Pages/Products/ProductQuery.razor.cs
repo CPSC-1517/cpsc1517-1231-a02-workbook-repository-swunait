@@ -83,7 +83,9 @@ namespace WestWindWebApp.Pages.Products
         {
             selectedCategoryId = 0;
             products.Clear();
-        }
+            ProductsQueryResult = new();
+
+		}
 
         private void OnCategoryChanged(ChangeEventArgs e)
         {

@@ -58,6 +58,7 @@
                 <th>Category Name</th>
                 <th>Supplier Company Name</th>
                 <th class="text-end">Unit Price</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -69,6 +70,7 @@
                     <td>@currentProduct.Category.CategoryName</td>
                     <td>@currentProduct.Supplier.CompanyName</td>
                     <td class="text-end">@currentProduct.UnitPrice</td>
+                    <td><a href="/crud/productcrud/@currentProduct.ProductId">edit</a></td>
                 </tr>
             }
         </tbody>

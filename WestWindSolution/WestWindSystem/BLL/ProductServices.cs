@@ -55,12 +55,22 @@ namespace WestWindSystem.BLL
         {
             return _westWindContext
                     .Products
+                    .Where(p => p.Discontinued == false)
                     .Include(p => p.Category)
                     .Include(p => p.Supplier)
-                    .Where(p =>  p.CategoryId == categoryId)
+                    .Where(p =>  p.CategoryId == categoryId && p.Discontinued == false)
                     .ToList();
         }
 
+        public Product? GetById(int productId)
+        {
+            var query = _westWindContext
+                            .Products
+                            .Where(p => p.Discontinued == false && p.ProductId == productId);
+            return query.FirstOrDefault();               
+        }
+
+        
         /// <summary>
         /// Return a list of Product with a matching partial value for
         /// either the ProductName or Category CategoryName or Supplier CompanyName
@@ -74,6 +84,7 @@ namespace WestWindSystem.BLL
                 .Products
                 .Include(p => p.Category)
                 .Include(p => p.Supplier)
+                .Where(p => p.Discontinued == false)
                 .Where(p => p.ProductName.Contains(partialName) 
                             || p.Category.CategoryName.Contains(partialName)
                             || p.Supplier.CompanyName.Contains(partialName) 
@@ -90,6 +101,7 @@ namespace WestWindSystem.BLL
                .Products
                .Include(p => p.Category)
                .Include(p => p.Supplier)
+               .Where(p => p.Discontinued == false)
                .Where(p => p.ProductName.Contains(partialName)
                            || p.Category.CategoryName.Contains(partialName)
                            || p.Supplier.CompanyName.Contains(partialName)

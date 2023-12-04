@@ -1,4 +1,4 @@
-﻿@page "/crud/productcrud"
+﻿@page "/crud/productcrud/{ProductId:int?}"
 
 <PageTitle>Product CRUD</PageTitle>
 
@@ -87,7 +87,14 @@
                class="form-control"
                id="UnitsOnOrder">
     </div>
-
+    <div class="form-check">
+        <input @bind="currentProduct.Discontinued"
+               type="checkbox"
+               class="form-check-input"
+               id="discontinued"
+               disabled>
+        <label for="discontinued" class="form-check-input">Discontinued</label>
+    </div>
 </fieldset>
 <div>
     <button @onclick="OnClickSave" class="btn btn-success">@(currentProduct.ProductId == 0 ? "Create" : "Update")</button>
