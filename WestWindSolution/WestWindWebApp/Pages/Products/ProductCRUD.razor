@@ -11,6 +11,19 @@
     </div>
 }
 
+@if (hasErrors)
+{
+    <div class="alert alert-danger">
+        <p>Please the fix the following issues:</p>
+        <ul>
+        @foreach(var currentError in errors)
+        {
+            <li>@currentError</li>
+        }
+        </ul>
+    </div>
+}
+
 <fieldset>
     <div class="mb-3">
         <label for="ProductId" class="form-label">Product ID</label>

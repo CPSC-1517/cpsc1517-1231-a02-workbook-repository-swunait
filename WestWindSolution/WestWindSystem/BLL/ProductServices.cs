@@ -19,13 +19,31 @@ namespace WestWindSystem.BLL
             _westWindContext = westWindContext;
         }
 
+        private void ValidateProduct(Product existingProduct)
+        {
+            if (existingProduct == null)
+            {
+                throw new ArgumentNullException(nameof(existingProduct), "A product is required.");
+            }
+            // Validate CategoryId of existingProduct exists in the database
+            if ( _westWindContext.Categories.Any(c => c.CategoryId == existingProduct.CategoryId) == false)
+            {
+                throw new ArgumentException($"CategoryId {existingProduct.CategoryId} does not exists.");
+            }
+            // Validate SupplierId of existingProduct exists in the database
+            if ( _westWindContext.Suppliers.Any(s => s.SupplierId == existingProduct.SupplierId) == false)
+            {
+                throw new ArgumentException($"SupplierId {existingProduct.SupplierId} does not exists.");
+            }
+            // Validate UnitPrice is more than $1.00
+            if (existingProduct.UnitPrice < 1)
+            {
+                throw new ArgumentException("Product unit price must be at minimum $1.00 or more.");
+            }
+        }
         public int Add(Product newProduct)
         {
-            // Validate that newProduct is not null
-            if (newProduct == null)
-            {
-                throw new ArgumentNullException(nameof(newProduct),"A new product is required.");
-            }
+            ValidateProduct(newProduct);
 
 
             newProduct.Discontinued = false;
@@ -36,6 +54,8 @@ namespace WestWindSystem.BLL
 
         public int Update(Product existingProduct) 
         {
+            ValidateProduct(existingProduct);
+
             _westWindContext.Products.Update(existingProduct);
             int rowsUpdated = _westWindContext.SaveChanges();
             return rowsUpdated;
@@ -46,6 +66,21 @@ namespace WestWindSystem.BLL
             //_westWindContext.Products.Remove(existingProduct); // hard-delete
             //int rowsDeleted = _westWindContext.SaveChanges();
             //return rowsDeleted;
+
+            // Validate incoming parameters are not null
+            if (existingProduct == null)
+            {
+                throw new ArgumentNullException(nameof(existingProduct), "Product is required.");
+            }
+
+            // Check if there any OrderDetails that references this product
+            bool inAnyOrderDetails = _westWindContext
+                .OrderDetails
+                .Any(od => od.ProductId == existingProduct.ProductId);
+            if (inAnyOrderDetails)
+            {
+                throw new ArgumentException($"ProductID {existingProduct.ProductId} is being reference from OrderDetails and cannot be deleted. ");
+            }
 
             existingProduct.Discontinued = true;    // soft-delete
             return Update(existingProduct);

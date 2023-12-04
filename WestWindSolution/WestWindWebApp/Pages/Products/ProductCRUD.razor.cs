@@ -13,6 +13,7 @@ namespace WestWindWebApp.Pages.Products
         private List<Supplier> suppliers = new();
        
         private string? feedbackMessage;
+        private List<string> errors = new();
 
         #endregion
 
@@ -37,6 +38,8 @@ namespace WestWindWebApp.Pages.Products
         [Parameter]
         public int? ProductId { get; set; }
 
+        private bool hasErrors => errors.Any();
+
         #endregion
 
         #region methods
@@ -53,18 +56,44 @@ namespace WestWindWebApp.Pages.Products
 
         private void OnClickSave()
         {
+            errors.Clear();
             try
             {
-                if (currentProduct.ProductId == 0)
+                if(currentProduct.CategoryId == 0)
                 {
-                    int productId = CurrentProductServices.Add(currentProduct);
-                    feedbackMessage = $"Successfully created product with productId {productId}";
+                    errors.Add("Please select a Category.");
                 }
-                else
+                if(currentProduct.SupplierId == 0)
                 {
-                    CurrentProductServices.Update(currentProduct);
-                    feedbackMessage = "Successfully updated product.";
+                    errors.Add("Please select a Supplier.");
                 }
+                if(currentProduct.UnitsOnOrder < 0)
+                {
+                    errors.Add("Units On Order must be zero or more.");
+                }
+                if(currentProduct.MinimumOrderQuantity < 1)
+                {
+                    errors.Add("Minimum Order Quantity must be one or more.");
+                }
+                if (string.IsNullOrWhiteSpace(currentProduct.ProductName))
+                {
+                    errors.Add("Product Name is required.");
+                }
+
+                if (errors.Count == 0)
+                {
+                    if (currentProduct.ProductId == 0)
+                    {
+                        int productId = CurrentProductServices.Add(currentProduct);
+                        feedbackMessage = $"Successfully created product with productId {productId}";
+                    }
+                    else
+                    {
+                        CurrentProductServices.Update(currentProduct);
+                        feedbackMessage = "Successfully updated product.";
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
