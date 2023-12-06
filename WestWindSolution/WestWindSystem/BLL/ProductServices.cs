@@ -56,7 +56,14 @@ namespace WestWindSystem.BLL
         {
             ValidateProduct(existingProduct);
 
-            _westWindContext.Products.Update(existingProduct);
+            //_westWindContext.Products.Update(existingProduct);
+            // https://learn.microsoft.com/en-us/ef/core/change-tracking/identity-resolution
+            // Query then apply changes
+            var trackedProduct = _westWindContext.Products.Find(existingProduct.ProductId);
+            // https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.changetracking.propertyvalues.setvalues?view=efcore-7.0
+            // Copy all the values from existingProduct to set them on the trackedProduct 
+            _westWindContext.Entry(trackedProduct).CurrentValues.SetValues(existingProduct);
+
             int rowsUpdated = _westWindContext.SaveChanges();
             return rowsUpdated;
         }
@@ -94,6 +101,7 @@ namespace WestWindSystem.BLL
                     .Include(p => p.Category)
                     .Include(p => p.Supplier)
                     .Where(p =>  p.CategoryId == categoryId && p.Discontinued == false)
+                    .AsNoTracking()
                     .ToList();
         }
 
@@ -101,7 +109,8 @@ namespace WestWindSystem.BLL
         {
             var query = _westWindContext
                             .Products
-                            .Where(p => p.Discontinued == false && p.ProductId == productId);
+                            .Where(p => p.Discontinued == false && p.ProductId == productId)
+                            .AsNoTracking();
             return query.FirstOrDefault();               
         }
 
@@ -124,6 +133,7 @@ namespace WestWindSystem.BLL
                             || p.Category.CategoryName.Contains(partialName)
                             || p.Supplier.CompanyName.Contains(partialName) 
                             )
+                .AsNoTracking()
                 .ToList();
         }
 
@@ -140,7 +150,8 @@ namespace WestWindSystem.BLL
                .Where(p => p.ProductName.Contains(partialName)
                            || p.Category.CategoryName.Contains(partialName)
                            || p.Supplier.CompanyName.Contains(partialName)
-                           );
+                           )
+               .AsNoTracking();
             return Task.FromResult(query.ToPagedResult(page, pageSize));
         }
 

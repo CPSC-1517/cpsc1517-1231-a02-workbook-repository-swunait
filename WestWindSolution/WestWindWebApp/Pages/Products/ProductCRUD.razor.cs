@@ -104,7 +104,7 @@ namespace WestWindWebApp.Pages.Products
         private async void OnClickDelete()
         {
             if (await CurrentJSRuntime.InvokeAsync<bool>(
-                "confirm", "Are you sure you wanto to delete this item?"))
+                "confirm", "Are you sure you want to delete this item?"))
             {
                 try
                 {
@@ -122,9 +122,15 @@ namespace WestWindWebApp.Pages.Products
             }
         }
 
-        private void OnClickCancel()
+        private async void OnClickCancel()
         {
+            if (await CurrentJSRuntime.InvokeAsync<bool>(
+                "confirm", "Are you sure you want to cancel and lose unsaved data?"))
+            {
+                currentProduct = new();
 
+                await InvokeAsync(StateHasChanged);
+            }
         }
 
         private Exception GetInnerException(Exception ex)

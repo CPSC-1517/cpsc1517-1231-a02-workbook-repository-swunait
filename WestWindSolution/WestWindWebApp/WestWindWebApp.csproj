@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Pages\Categories\CategoryCRUD.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\WestWindSystem\WestWindSystem.csproj" />
   </ItemGroup>
 
@@ -19,16 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Pages\Categories\CategoryCRUD.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Categories\CategoryCRUD.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="BlazorPagination\BlazorPager.razor" />
-    <None Include="Pages\Categories\CategoryCRUD.razor" />
   </ItemGroup>
 
 </Project>

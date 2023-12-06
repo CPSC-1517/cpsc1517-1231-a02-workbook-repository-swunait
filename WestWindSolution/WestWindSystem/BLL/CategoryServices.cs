@@ -20,7 +20,7 @@ namespace WestWindSystem.BLL
 
         public List<Category> GetAll()
         {
-            return _westWindContext.Categories.ToList();
+            return _westWindContext.Categories.AsNoTracking().ToList();
         }
 
         public Category? Get(int categoryId)
@@ -37,6 +37,7 @@ namespace WestWindSystem.BLL
             return _westWindContext
                     .Categories
                     .Where(c => c.Description.Contains(partialDescription))
+                    .AsNoTracking()
                     .ToList();
         }
 
