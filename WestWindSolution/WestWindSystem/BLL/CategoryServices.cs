@@ -67,7 +67,13 @@ namespace WestWindSystem.BLL
         public int UpdateCategory(Category existingCategory)
         {
             //_westWindContext.Categories.Entry(existingCategory).State = EntityState.Modified;
-            _westWindContext.Categories.Update(existingCategory);
+            //_westWindContext.Categories.Update(existingCategory);
+            // https://learn.microsoft.com/en-us/ef/core/change-tracking/identity-resolution
+            // Query then apply changes
+            var trackedCategory = _westWindContext.Products.Find(existingCategory.CategoryId);
+            // Copy all the values from existingProduct to set them on the trackedProduct 
+            _westWindContext.Entry(trackedCategory).CurrentValues.SetValues(existingCategory);
+
             int rowsUpdated = _westWindContext.SaveChanges();
             return rowsUpdated;
         }
